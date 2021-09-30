@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="enter_city">Введите полное название города на английском языке</string>
+    <string name="find">Найти</string>
+    <string name="open_storage">Открыть список погоды</string>
+    <string name="open_find_weather">Открыть экран с поиском</string>
+    <string name="connection_error">Проверьте соединение с интернетом</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="unknown_city">Вы ввели неверное название города</string>
+</resources>
