@@ -31,7 +31,8 @@ class WeatherAdapter(
 
         fun onBind(weatherEntity: WeatherEntity) {
             with(viewBinding) {
-                weatherText.text = weatherEntity.toString()
+                nameCity.text = weatherEntity.nameCity
+                weatherText.text = root.context.getString(R.string.temperature,weatherEntity.weatherInfo.temperature.toString())
             }
         }
     }

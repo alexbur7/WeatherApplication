@@ -7,4 +7,5 @@
     <string name="connection_error">Проверьте соединение с интернетом</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="unknown_city">Вы ввели неверное название города</string>
+    <string name="temperature">Температура в городе %1s градусов</string>
 </resources>
