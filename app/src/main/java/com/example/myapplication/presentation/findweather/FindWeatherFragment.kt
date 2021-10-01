@@ -10,8 +10,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFindWeatherBinding
 
-import com.example.myapplication.presentation.ViewModelFactory
-import com.example.myapplication.presentation.appComponent
+import com.example.myapplication.presentation.base.ViewModelFactory
+import com.example.myapplication.presentation.base.appComponent
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
 import kotlinx.serialization.ExperimentalSerializationApi
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     private val viewBinding by viewBinding(FragmentFindWeatherBinding::bind)
     private val viewModel: FindWeatherViewModel by viewModels { viewModelFactory }
-    private val weathers = mutableListOf<WeatherEntity>()
+    private val weathers = mutableSetOf<WeatherEntity>()
     private var callback: Callback? = null
 
 
@@ -36,18 +36,31 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weathersList:List<WeatherEntity>? = arguments?.getParcelableArrayList(WEATHER_LIST_KEY)
-        if (weathersList != null){
+        val weathersList: List<WeatherEntity>? = arguments?.getParcelableArrayList(WEATHER_LIST_KEY)
+        if (weathersList != null) {
             weathers.addAll(weathersList)
         }
         with(viewBinding) {
             viewModel.weatherLiveData.observe(viewLifecycleOwner) {
-                weather.text = it.toString()
+                temperature.text = requireContext().getString(
+                    R.string.temperature,
+                    it.weatherInfo.temperature.toString()
+                )
+                minTemperature.text = requireContext().getString(
+                    R.string.min_temperature,
+                    it.weatherInfo.minTemperature.toString()
+                )
+                maxTemperature.text = requireContext().getString(
+                    R.string.max_temperature,
+                    it.weatherInfo.maxTemperature.toString()
+                )
+                speedWind.text =
+                    requireContext().getString(R.string.speed_wind, it.wind.speed.toString())
                 weathers.add(it)
             }
 
             openStorageWeather.setOnClickListener {
-                callback?.openStorageWeatherFragment(weathers)
+                callback?.openStorageWeatherFragment(weathers.toList())
             }
 
             findWeather.setOnClickListener {
@@ -65,7 +78,7 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
         fun openStorageWeatherFragment(weathers: List<WeatherEntity>)
     }
 
-    companion object{
+    companion object {
         fun newInstance(weathers: List<WeatherEntity>? = null): FindWeatherFragment {
             val args = bundleOf(WEATHER_LIST_KEY to weathers)
             val fragment = FindWeatherFragment()

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentStorageWeatherBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
-import com.example.myapplication.presentation.appComponent
+import com.example.myapplication.presentation.base.appComponent
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
 import kotlinx.serialization.ExperimentalSerializationApi
 

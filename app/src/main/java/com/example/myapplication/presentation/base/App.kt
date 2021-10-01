@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation
+package com.example.myapplication.presentation.base
 
 import android.app.Application
 import android.content.Context
