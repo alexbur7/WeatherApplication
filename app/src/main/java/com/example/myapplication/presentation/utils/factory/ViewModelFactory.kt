@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.base
+package com.example.myapplication.presentation.utils.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
