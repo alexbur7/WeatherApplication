@@ -38,7 +38,9 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
                 callback?.openFindWeatherFragment(weathers)
             }
             weathersRecView.run {
-                adapter = WeatherAdapter(weathers)
+                adapter = WeatherAdapter().apply {
+                    setData(weathers)
+                }
                 layoutManager = LinearLayoutManager(context)
             }
         }

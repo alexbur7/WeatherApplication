@@ -9,9 +9,9 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemWeatherBinding
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
 
-class WeatherAdapter(
-    private val weathers: List<WeatherEntity>
-) : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
+class WeatherAdapter() : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
+
+    private val weathers = mutableListOf<WeatherEntity>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHolder {
         return WeatherHolder(
@@ -25,6 +25,11 @@ class WeatherAdapter(
 
     override fun getItemCount(): Int = weathers.size
 
+    fun setData(weathers: List<WeatherEntity>) {
+        this.weathers.clear()
+        this.weathers.addAll(weathers)
+    }
+
     inner class WeatherHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val viewBinding by viewBinding(ItemWeatherBinding::bind)
@@ -32,7 +37,10 @@ class WeatherAdapter(
         fun onBind(weatherEntity: WeatherEntity) {
             with(viewBinding) {
                 nameCity.text = weatherEntity.nameCity
-                weatherText.text = root.context.getString(R.string.temperature,weatherEntity.weatherInfo.temperature.toString())
+                weatherText.text = root.context.getString(
+                    R.string.temperature,
+                    weatherEntity.weatherInfo.temperature.toString()
+                )
             }
         }
     }
