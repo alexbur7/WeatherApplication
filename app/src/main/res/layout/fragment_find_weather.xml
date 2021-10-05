@@ -9,6 +9,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:maxLength="168"
         android:hint="@string/enter_city"
         app:layout_constraintEnd_toStartOf="@id/findWeather"
         app:layout_constraintStart_toStartOf="parent"
