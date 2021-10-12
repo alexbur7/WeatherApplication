@@ -16,7 +16,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
 
     private val viewBinding by viewBinding(FragmentStorageWeatherBinding::bind)
-    private val weathers = arrayListOf<WeatherEntity>()
 
     @ExperimentalSerializationApi
     override fun onAttach(context: Context) {
@@ -26,18 +25,15 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weathersList: ArrayList<WeatherEntity>? =
-            arguments?.getParcelableArrayList(WEATHERS_KEY)
-        if (weathersList != null) {
-            weathers.addAll(weathersList)
-        }
+        val weathersList: ArrayList<WeatherEntity> =
+            arguments?.getParcelableArrayList(WEATHERS_KEY) ?: arrayListOf()
         with(viewBinding) {
             openFindWeather.setOnClickListener {
-                openFindWeatherFragment(weathers)
+                openFindWeatherFragment(weathersList)
             }
             weathersRecView.run {
                 adapter = WeatherAdapter().apply {
-                    setData(weathers)
+                    setData(weathersList.toList())
                 }
                 layoutManager = LinearLayoutManager(context)
             }

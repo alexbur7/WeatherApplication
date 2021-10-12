@@ -23,6 +23,8 @@ class FindWeatherViewModel @Inject constructor(
     private val _weatherLiveData = MutableLiveData<WeatherEntity>()
     private val _errorLiveData = SingleLiveEvent<Throwable>()
     private val compositeDisposable = CompositeDisposable()
+    private val weathers = arrayListOf<WeatherEntity>()
+    val weathersLiveData = MutableLiveData(weathers)
 
     fun findWeather(city: String) {
         compositeDisposable.add(
@@ -31,10 +33,17 @@ class FindWeatherViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _weatherLiveData.value = it
+                    weathers.addWeather(it)
                 }, {
                     _errorLiveData.value = it
                 })
         )
+    }
+
+    private fun ArrayList<WeatherEntity>.addWeather(weatherEntity: WeatherEntity) {
+        if (find { it.nameCity == weatherEntity.nameCity } == null) {
+            add(weatherEntity)
+        }
     }
 
     override fun onCleared() {
