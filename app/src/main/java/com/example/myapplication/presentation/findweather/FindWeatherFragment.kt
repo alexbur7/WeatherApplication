@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFindWeatherBinding
+import com.example.myapplication.presentation.base.ErrorHandler
 
 import com.example.myapplication.presentation.utils.factory.ViewModelFactory
 import com.example.myapplication.presentation.main.appComponent
@@ -20,6 +21,9 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var errorHandler: ErrorHandler
 
     private val viewBinding by viewBinding(FragmentFindWeatherBinding::bind)
     private val viewModel: FindWeatherViewModel by viewModels { viewModelFactory }
@@ -57,6 +61,10 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
                 speedWind.text =
                     requireContext().getString(R.string.speed_wind, it.wind.speed.toString())
                 weathers.add(it)
+            }
+
+            viewModel.errorLiveData.observe(viewLifecycleOwner) {
+                errorHandler.showErrorToast(it)
             }
 
             openStorageWeather.setOnClickListener {

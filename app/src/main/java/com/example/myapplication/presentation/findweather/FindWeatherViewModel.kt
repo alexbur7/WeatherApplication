@@ -12,13 +12,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class FindWeatherViewModel @Inject constructor(
-    private val findWeatherRepository: FindWeatherRepository,
-    private val errorHandler: ErrorHandler
+    private val findWeatherRepository: FindWeatherRepository
 ) : ViewModel() {
 
     val weatherLiveData: LiveData<WeatherEntity>
         get() = _weatherLiveData
+    val errorLiveData: LiveData<Throwable>
+        get() = _errorLiveData
     private val _weatherLiveData = MutableLiveData<WeatherEntity>()
+    private val _errorLiveData = SingleLiveEvent<Throwable>()
     private val compositeDisposable = CompositeDisposable()
 
     fun findWeather(city: String) {
@@ -29,7 +31,7 @@ class FindWeatherViewModel @Inject constructor(
                 .subscribe({
                     _weatherLiveData.value = it
                 }, {
-                    errorHandler.showErrorToast(it)
+                    _errorLiveData.value = it
                 })
         )
     }
