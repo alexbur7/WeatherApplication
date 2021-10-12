@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentStorageWeatherBinding
-import com.example.myapplication.presentation.base.appComponent
 import com.example.myapplication.presentation.findweather.FindWeatherFragment
 import com.example.myapplication.presentation.main.appComponent
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity

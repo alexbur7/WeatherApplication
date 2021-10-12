@@ -8,10 +8,11 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFindWeatherBinding
-import com.example.myapplication.presentation.base.ViewModelFactory
-import com.example.myapplication.presentation.base.appComponent
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.presentation.main.appComponent
 import com.example.myapplication.presentation.storageweather.StorageWeatherFragment
+import com.example.myapplication.presentation.utils.ErrorHandler
+import com.example.myapplication.presentation.utils.factory.ViewModelFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import javax.inject.Inject
 
