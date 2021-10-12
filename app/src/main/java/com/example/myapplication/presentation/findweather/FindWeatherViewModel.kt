@@ -5,23 +5,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.domain.FindWeatherRepository
 import com.example.myapplication.presentation.SingleLiveEvent
-import com.example.myapplication.presentation.utils.ErrorHandler
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.presentation.utils.ErrorHandler
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class FindWeatherViewModel @Inject constructor(
-    private val findWeatherRepository: FindWeatherRepository
+    private val findWeatherRepository: FindWeatherRepository,
+    private val errorHandler: ErrorHandler
 ) : ViewModel() {
 
     val weatherLiveData: LiveData<WeatherEntity>
         get() = _weatherLiveData
-    val errorLiveData: LiveData<Throwable>
-        get() = _errorLiveData
+    val errorTextIdLiveData: LiveData<Int>
+        get() = _errorTextIdLiveData
     private val _weatherLiveData = MutableLiveData<WeatherEntity>()
-    private val _errorLiveData = SingleLiveEvent<Throwable>()
+    private val _errorTextIdLiveData = SingleLiveEvent<Int>()
     private val compositeDisposable = CompositeDisposable()
 
     fun findWeather(city: String) {
@@ -32,7 +33,7 @@ class FindWeatherViewModel @Inject constructor(
                 .subscribe({
                     _weatherLiveData.value = it
                 }, {
-                    _errorLiveData.value = it
+                    _errorTextIdLiveData.value = errorHandler.getErrorStringIdByThrowable(it)
                 })
         )
     }
