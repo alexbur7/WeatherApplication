@@ -3,17 +3,15 @@ package com.example.myapplication.presentation.findweather
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFindWeatherBinding
-import com.example.myapplication.presentation.base.ErrorHandler
-
-import com.example.myapplication.presentation.utils.factory.ViewModelFactory
-import com.example.myapplication.presentation.main.appComponent
+import com.example.myapplication.presentation.base.ViewModelFactory
+import com.example.myapplication.presentation.base.appComponent
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.presentation.storageweather.StorageWeatherFragment
 import kotlinx.serialization.ExperimentalSerializationApi
 import javax.inject.Inject
 
@@ -27,15 +25,13 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     private val viewBinding by viewBinding(FragmentFindWeatherBinding::bind)
     private val viewModel: FindWeatherViewModel by viewModels { viewModelFactory }
-    private val weathers = mutableSetOf<WeatherEntity>()
-    private var callback: Callback? = null
+    private val weathers = arrayListOf<WeatherEntity>()
 
 
     @ExperimentalSerializationApi
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
-        callback = context as Callback
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +56,7 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
                 )
                 speedWind.text =
                     requireContext().getString(R.string.speed_wind, it.wind.speed.toString())
-                weathers.add(it)
+                weathers.addWeather(it)
             }
 
             viewModel.errorLiveData.observe(viewLifecycleOwner) {
@@ -68,7 +64,7 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
             }
 
             openStorageWeather.setOnClickListener {
-                callback?.openStorageWeatherFragment(weathers.toList())
+                openStorageWeatherFragment(weathers)
             }
 
             findWeather.setOnClickListener {
@@ -77,18 +73,23 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callback = null
+    private fun ArrayList<WeatherEntity>.addWeather(weatherEntity: WeatherEntity) {
+        if (find { it.nameCity == weatherEntity.nameCity } == null) {
+            add(weatherEntity)
+        }
     }
 
-    interface Callback {
-        fun openStorageWeatherFragment(weathers: List<WeatherEntity>)
+    private fun openStorageWeatherFragment(weathers: ArrayList<WeatherEntity>) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, StorageWeatherFragment.newInstance(weathers))
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {
-        fun newInstance(weathers: List<WeatherEntity>? = null): FindWeatherFragment {
-            val args = bundleOf(WEATHER_LIST_KEY to weathers)
+        fun newInstance(weathers: ArrayList<WeatherEntity>? = null): FindWeatherFragment {
+            val args = Bundle()
+            args.putParcelableArrayList(WEATHER_LIST_KEY, weathers)
             val fragment = FindWeatherFragment()
             fragment.arguments = args
             return fragment
