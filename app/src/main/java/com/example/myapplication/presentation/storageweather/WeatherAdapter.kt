@@ -3,15 +3,17 @@ package com.example.myapplication.presentation.storageweather
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemWeatherBinding
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
 
-class WeatherAdapter() : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
+class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
 
-    private val weathers = mutableListOf<WeatherEntity>()
+    private val diffUtil = AsyncListDiffer(this, WeatherCallback())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHolder {
         return WeatherHolder(
@@ -20,14 +22,13 @@ class WeatherAdapter() : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
     }
 
     override fun onBindViewHolder(holder: WeatherHolder, position: Int) {
-        holder.onBind(weathers[position])
+        holder.onBind(diffUtil.currentList[position])
     }
 
-    override fun getItemCount(): Int = weathers.size
+    override fun getItemCount(): Int = diffUtil.currentList.size
 
     fun setData(weathers: List<WeatherEntity>) {
-        this.weathers.clear()
-        this.weathers.addAll(weathers)
+        diffUtil.submitList(weathers)
     }
 
     inner class WeatherHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -44,4 +45,15 @@ class WeatherAdapter() : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
             }
         }
     }
+}
+
+class WeatherCallback: DiffUtil.ItemCallback<WeatherEntity>(){
+    override fun areItemsTheSame(oldItem: WeatherEntity, newItem: WeatherEntity): Boolean {
+        return oldItem.nameCity == newItem.nameCity
+    }
+
+    override fun areContentsTheSame(oldItem: WeatherEntity, newItem: WeatherEntity): Boolean {
+        return oldItem == newItem
+    }
+
 }
