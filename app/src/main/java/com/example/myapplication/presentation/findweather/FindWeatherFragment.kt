@@ -11,7 +11,6 @@ import com.example.myapplication.databinding.FragmentFindWeatherBinding
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
 import com.example.myapplication.presentation.main.appComponent
 import com.example.myapplication.presentation.storageweather.StorageWeatherFragment
-import com.example.myapplication.presentation.utils.extentions.addWeather
 import com.example.myapplication.presentation.utils.extentions.showToastWithErrorMessage
 import com.example.myapplication.presentation.utils.factory.ViewModelFactory
 import kotlinx.serialization.ExperimentalSerializationApi

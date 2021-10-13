@@ -7,6 +7,7 @@ import com.example.myapplication.domain.FindWeatherRepository
 import com.example.myapplication.presentation.SingleLiveEvent
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
 import com.example.myapplication.presentation.utils.ErrorHandler
+import com.example.myapplication.presentation.utils.extentions.addWeather
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -39,12 +40,6 @@ class FindWeatherViewModel @Inject constructor(
                     _errorTextIdLiveData.value = errorHandler.getErrorStringIdByThrowable(it)
                 })
         )
-    }
-
-    private fun ArrayList<WeatherEntity>.addWeather(weatherEntity: WeatherEntity) {
-        if (find { it.nameCity == weatherEntity.nameCity } == null) {
-            add(weatherEntity)
-        }
     }
 
     override fun onCleared() {
