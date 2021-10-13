@@ -11,7 +11,8 @@ import com.example.myapplication.databinding.FragmentFindWeatherBinding
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
 import com.example.myapplication.presentation.main.appComponent
 import com.example.myapplication.presentation.storageweather.StorageWeatherFragment
-import com.example.myapplication.presentation.utils.ErrorHandler
+import com.example.myapplication.presentation.utils.extentions.addWeather
+import com.example.myapplication.presentation.utils.extentions.showToastWithErrorMessage
 import com.example.myapplication.presentation.utils.factory.ViewModelFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import javax.inject.Inject
@@ -20,9 +21,6 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-
-    @Inject
-    lateinit var errorHandler: ErrorHandler
 
     private val viewBinding by viewBinding(FragmentFindWeatherBinding::bind)
     private val viewModel: FindWeatherViewModel by viewModels { viewModelFactory }
@@ -60,8 +58,8 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
                 weathers.addWeather(it)
             }
 
-            viewModel.errorLiveData.observe(viewLifecycleOwner) {
-                errorHandler.showErrorToast(it)
+            viewModel.errorTextIdLiveData.observe(viewLifecycleOwner) {
+                requireContext().showToastWithErrorMessage(it)
             }
 
             openStorageWeather.setOnClickListener {
@@ -71,12 +69,6 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
             findWeather.setOnClickListener {
                 viewModel.findWeather(nameCity.text.toString())
             }
-        }
-    }
-
-    private fun ArrayList<WeatherEntity>.addWeather(weatherEntity: WeatherEntity) {
-        if (find { it.nameCity == weatherEntity.nameCity } == null) {
-            add(weatherEntity)
         }
     }
 
