@@ -24,7 +24,6 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     private val viewBinding by viewBinding(FragmentFindWeatherBinding::bind)
     private val viewModel: FindWeatherViewModel by viewModels { viewModelFactory }
-    private val weathers = arrayListOf<WeatherEntity>()
 
 
     @ExperimentalSerializationApi
@@ -35,10 +34,6 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weathersList: List<WeatherEntity>? = arguments?.getParcelableArrayList(WEATHER_LIST_KEY)
-        if (weathersList != null) {
-            weathers.addAll(weathersList)
-        }
         with(viewBinding) {
             viewModel.weatherLiveData.observe(viewLifecycleOwner) {
                 temperature.text = requireContext().getString(
@@ -55,7 +50,6 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
                 )
                 speedWind.text =
                     requireContext().getString(R.string.speed_wind, it.wind.speed.toString())
-                weathers.addWeather(it)
             }
 
             viewModel.errorTextIdLiveData.observe(viewLifecycleOwner) {
@@ -63,7 +57,7 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
             }
 
             openStorageWeather.setOnClickListener {
-                openStorageWeatherFragment(weathers)
+                openStorageWeatherFragment()
             }
 
             findWeather.setOnClickListener {
@@ -72,11 +66,13 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
         }
     }
 
-    private fun openStorageWeatherFragment(weathers: ArrayList<WeatherEntity>) {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, StorageWeatherFragment.newInstance(weathers))
-            .addToBackStack(null)
-            .commit()
+    private fun openStorageWeatherFragment() {
+        viewModel.weathersLiveData.value?.let {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, StorageWeatherFragment.newInstance(it))
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     companion object {
