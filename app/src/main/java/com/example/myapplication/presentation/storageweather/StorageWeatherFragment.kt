@@ -14,6 +14,8 @@ import com.example.myapplication.databinding.FragmentStorageWeatherBinding
 import com.example.myapplication.presentation.findweather.FindWeatherFragment
 import com.example.myapplication.presentation.main.appComponent
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.presentation.main.Callback
+import com.example.myapplication.presentation.main.MainActivity
 import kotlinx.serialization.ExperimentalSerializationApi
 
 class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
@@ -21,16 +23,24 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
     private val viewBinding by viewBinding(FragmentStorageWeatherBinding::bind)
     private var weathersList: ArrayList<WeatherEntity>? = null
     private val weatherAdapter by lazy(LazyThreadSafetyMode.NONE) { WeatherAdapter() }
+    private var callback: Callback? = null
 
     @ExperimentalSerializationApi
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
+        if (context is Callback) {
+            callback = context
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        weathersList = arguments?.getParcelableArrayList(WEATHERS_KEY)
+        weathersList = if (savedInstanceState != null) {
+            savedInstanceState.getParcelableArrayList(WEATHERS_KEY)
+        } else {
+            arguments?.getParcelableArrayList(WEATHERS_KEY)
+        }
         with(viewBinding) {
             toolbar.inflateMenu(R.menu.menu)
             toolbar.setOnMenuItemClickListener {
@@ -52,6 +62,17 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
         }
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(WEATHERS_KEY, weathersList)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback = null
+    }
+
     private fun deleteWeathers() {
         weathersList?.let {
             it.clear()
@@ -64,10 +85,11 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
             .replace(R.id.fragment_container, FindWeatherFragment.newInstance(weathers))
             .addToBackStack(null)
             .commit()
+        callback?.changeScreen()
     }
 
     companion object {
-        fun newInstance(weathers: ArrayList<WeatherEntity>): StorageWeatherFragment {
+        fun newInstance(weathers: ArrayList<WeatherEntity>? = null): StorageWeatherFragment {
             val args = Bundle()
             args.putParcelableArrayList(WEATHERS_KEY, weathers)
             val fragment = StorageWeatherFragment()
