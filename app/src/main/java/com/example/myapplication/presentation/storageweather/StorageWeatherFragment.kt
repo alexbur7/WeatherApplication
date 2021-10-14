@@ -50,10 +50,6 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
                 requireContext().showToastWithErrorMessage(it)
             }
 
-            openFindWeather.setOnClickListener {
-                openFindWeatherFragment()
-            }
-
             weathersRecView.run {
                 adapter = weatherAdapter
                 layoutManager = LinearLayoutManager(context)
@@ -63,13 +59,6 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
 
     private fun deleteWeathers() {
         viewModel.deleteWeathers()
-    }
-
-    private fun openFindWeatherFragment() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, FindWeatherFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
     }
 
     private fun repeatWeather(nameCity: String) {
