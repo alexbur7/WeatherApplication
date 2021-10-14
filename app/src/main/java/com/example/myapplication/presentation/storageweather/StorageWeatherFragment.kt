@@ -10,7 +10,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentStorageWeatherBinding
 import com.example.myapplication.presentation.findweather.FindWeatherFragment
-import com.example.myapplication.domain.entity.WeatherEntity
 import com.example.myapplication.presentation.main.appComponent
 import com.example.myapplication.presentation.utils.extentions.showToastWithErrorMessage
 import com.example.myapplication.presentation.utils.factory.ViewModelFactory
@@ -23,7 +22,7 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
     lateinit var factory: ViewModelFactory
 
     private val viewBinding by viewBinding(FragmentStorageWeatherBinding::bind)
-    private val weatherAdapter by lazy(LazyThreadSafetyMode.NONE) { WeatherAdapter() }
+    private val weatherAdapter by lazy(LazyThreadSafetyMode.NONE) { WeatherAdapter(::repeatWeather) }
     private val viewModel by viewModels<StorageWeatherViewModel> { factory }
 
     @ExperimentalSerializationApi
@@ -54,6 +53,7 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
             openFindWeather.setOnClickListener {
                 openFindWeatherFragment()
             }
+
             weathersRecView.run {
                 adapter = weatherAdapter
                 layoutManager = LinearLayoutManager(context)
@@ -68,6 +68,13 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
     private fun openFindWeatherFragment() {
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, FindWeatherFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun repeatWeather(nameCity: String) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, FindWeatherFragment.newInstance(nameCity))
             .addToBackStack(null)
             .commit()
     }

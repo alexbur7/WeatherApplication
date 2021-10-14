@@ -14,4 +14,5 @@
     <string name="delete_weathers">Очистить список</string>
     <string name="unknown_exception">Неизвестная ошибка</string>
     <string name="history">История</string>
+    <string name="repeat">Повторить</string>
 </resources>

@@ -11,7 +11,9 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemWeatherBinding
 import com.example.myapplication.domain.entity.WeatherEntity
 
-class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
+class WeatherAdapter(
+    private val repeatWeather: (String) -> Unit
+) : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
 
     private val diffUtil = AsyncListDiffer(this, WeatherCallback())
 
@@ -42,12 +44,15 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
                     R.string.temperature,
                     weatherEntity.weatherInfo.temperature.toString()
                 )
+                repeatButton.setOnClickListener {
+                    repeatWeather(weatherEntity.nameCity)
+                }
             }
         }
     }
 }
 
-class WeatherCallback: DiffUtil.ItemCallback<WeatherEntity>(){
+class WeatherCallback : DiffUtil.ItemCallback<WeatherEntity>() {
     override fun areItemsTheSame(oldItem: WeatherEntity, newItem: WeatherEntity): Boolean {
         return oldItem.nameCity == newItem.nameCity
     }

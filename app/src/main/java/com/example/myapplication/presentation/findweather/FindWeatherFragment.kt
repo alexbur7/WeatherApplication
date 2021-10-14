@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFindWeatherBinding
-import com.example.myapplication.domain.entity.WeatherEntity
 import com.example.myapplication.presentation.main.appComponent
 import com.example.myapplication.presentation.storageweather.StorageWeatherFragment
 import com.example.myapplication.presentation.utils.extentions.showToastWithErrorMessage
@@ -32,10 +31,14 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val nameCity = arguments?.getString(NAME_CITY_KEY)
+        if (nameCity != null) {
+            viewModel.findWeather(nameCity)
+        }
         with(viewBinding) {
             viewModel.weatherLiveData.observe(viewLifecycleOwner) {
-                nameCity.setText(it.nameCity)
-                nameCity.setSelection(it.nameCity.length)
+                nameCityText.setText(it.nameCity)
+                nameCityText.setSelection(it.nameCity.length)
                 temperature.text = requireContext().getString(
                     R.string.temperature,
                     it.weatherInfo.temperature.toString()
@@ -61,7 +64,7 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
             }
 
             findWeather.setOnClickListener {
-                viewModel.findWeather(nameCity.text.toString())
+                viewModel.findWeather(nameCityText.text.toString())
             }
         }
     }
@@ -74,11 +77,14 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
     }
 
     companion object {
-        fun newInstance(): FindWeatherFragment {
+        fun newInstance(nameCity: String? = null): FindWeatherFragment {
             val args = Bundle()
+            args.putString(NAME_CITY_KEY, nameCity)
             val fragment = FindWeatherFragment()
             fragment.arguments = args
             return fragment
         }
+
+        private const val NAME_CITY_KEY = "name_city_key"
     }
 }
