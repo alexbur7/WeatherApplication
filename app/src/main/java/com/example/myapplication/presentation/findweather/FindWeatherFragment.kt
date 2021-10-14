@@ -9,7 +9,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFindWeatherBinding
 import com.example.myapplication.presentation.findweather.entity.WeatherEntity
-import com.example.myapplication.presentation.main.Callback
 import com.example.myapplication.presentation.main.appComponent
 import com.example.myapplication.presentation.storageweather.StorageWeatherFragment
 import com.example.myapplication.presentation.utils.extentions.showToastWithErrorMessage
@@ -24,15 +23,11 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
 
     private val viewBinding by viewBinding(FragmentFindWeatherBinding::bind)
     private val viewModel: FindWeatherViewModel by viewModels { viewModelFactory }
-    private var callback: Callback? = null
 
     @ExperimentalSerializationApi
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
-        if (context is Callback){
-            callback = context
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,18 +64,12 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callback = null
-    }
-
     private fun openStorageWeatherFragment() {
         viewModel.weathersLiveData.value?.let {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, StorageWeatherFragment.newInstance(it))
                 .addToBackStack(null)
                 .commit()
-            callback?.changeScreen()
         }
     }
 
