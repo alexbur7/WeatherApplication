@@ -2,6 +2,7 @@ package com.example.myapplication.presentation.utils
 
 import com.example.myapplication.R
 import retrofit2.HttpException
+import java.net.ConnectException
 import javax.inject.Inject
 
 class ErrorHandler @Inject constructor() {
@@ -16,9 +17,11 @@ class ErrorHandler @Inject constructor() {
                     R.string.server_error
                 }
             }
-            else -> {
+            is ConnectException -> {
                 R.string.connection_error
             }
+            else ->
+                R.string.unknown_exception
         }
     }
 }

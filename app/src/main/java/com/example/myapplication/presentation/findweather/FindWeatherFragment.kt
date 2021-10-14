@@ -34,6 +34,8 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
         super.onViewCreated(view, savedInstanceState)
         with(viewBinding) {
             viewModel.weatherLiveData.observe(viewLifecycleOwner) {
+                nameCity.setText(it.nameCity)
+                nameCity.setSelection(it.nameCity.length)
                 temperature.text = requireContext().getString(
                     R.string.temperature,
                     it.weatherInfo.temperature.toString()

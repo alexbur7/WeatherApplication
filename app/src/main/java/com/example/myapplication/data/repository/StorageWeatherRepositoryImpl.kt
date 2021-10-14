@@ -6,6 +6,7 @@ import com.example.myapplication.data.mappers.entitytodb.WeatherEntityToDbMapper
 import com.example.myapplication.domain.entity.WeatherEntity
 import com.example.myapplication.domain.repostitory.StorageWeatherRepository
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
@@ -29,5 +30,12 @@ class StorageWeatherRepositoryImpl @Inject constructor(
                 weathers.map(weatherDbToEntityMapper)
             }
             .toSingle()
+    }
+
+    override fun getLastWeather(): Maybe<WeatherEntity> {
+        return weatherDao.getWeathers()
+            .map {
+                weatherDbToEntityMapper(it.last())
+            }
     }
 }

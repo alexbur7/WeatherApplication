@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.myapplication.domain.repostitory.FindWeatherRepository
 import com.example.myapplication.presentation.SingleLiveEvent
 import com.example.myapplication.domain.entity.WeatherEntity
+import com.example.myapplication.domain.repostitory.StorageWeatherRepository
 import com.example.myapplication.presentation.utils.ErrorHandler
 import com.example.myapplication.presentation.utils.extentions.addWeather
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -15,6 +16,7 @@ import javax.inject.Inject
 
 class FindWeatherViewModel @Inject constructor(
     private val findWeatherRepository: FindWeatherRepository,
+    private val storageWeatherRepository: StorageWeatherRepository,
     private val errorHandler: ErrorHandler
 ) : ViewModel() {
 
@@ -25,6 +27,10 @@ class FindWeatherViewModel @Inject constructor(
     private val _weatherLiveData = MutableLiveData<WeatherEntity>()
     private val _errorTextIdLiveData = SingleLiveEvent<Int>()
     private val compositeDisposable = CompositeDisposable()
+
+    init {
+        showLastFindWeather()
+    }
 
     fun findWeather(city: String) {
         compositeDisposable.add(
@@ -37,6 +43,18 @@ class FindWeatherViewModel @Inject constructor(
                     _errorTextIdLiveData.value = errorHandler.getErrorStringIdByThrowable(it)
                 })
         )
+    }
+
+    private fun showLastFindWeather() {
+        storageWeatherRepository.getLastWeather()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _weatherLiveData.value = it
+            }, {
+                if (it !is NoSuchElementException)
+                    _errorTextIdLiveData.value = errorHandler.getErrorStringIdByThrowable(it)
+            })
     }
 
     override fun onCleared() {
