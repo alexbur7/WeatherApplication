@@ -13,4 +13,5 @@
     <string name="speed_wind">Скорость ветра %1s м/c</string>
     <string name="delete_weathers">Очистить список</string>
     <string name="unknown_exception">Неизвестная ошибка</string>
+    <string name="history">История</string>
 </resources>
