@@ -56,21 +56,10 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
                 requireContext().showToastWithErrorMessage(it)
             }
 
-            openStorageWeather.setOnClickListener {
-                openStorageWeatherFragment()
-            }
-
             findWeather.setOnClickListener {
                 viewModel.findWeather(nameCity.text.toString())
             }
         }
-    }
-
-    private fun openStorageWeatherFragment() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, StorageWeatherFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
     }
 
     companion object {
