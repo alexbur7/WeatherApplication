@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemWeatherBinding
-import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.domain.entity.WeatherEntity
 
 class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
 

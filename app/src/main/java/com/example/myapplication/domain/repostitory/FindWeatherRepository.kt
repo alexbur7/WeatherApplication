@@ -1,6 +1,6 @@
-package com.example.myapplication.domain
+package com.example.myapplication.domain.repostitory
 
-import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.domain.entity.WeatherEntity
 import io.reactivex.rxjava3.core.Single
 
 interface FindWeatherRepository {

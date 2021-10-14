@@ -1,11 +1,12 @@
-package com.example.myapplication.data.mapper
+package com.example.myapplication.data.mappers.apitoentity
 
 import com.example.myapplication.data.service.api.WeatherInfoApi
-import com.example.myapplication.presentation.findweather.entity.WeatherInfoEntity
+import com.example.myapplication.domain.entity.WeatherInfoEntity
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class WeatherInfoApiToEntityMapper @Inject constructor() : (WeatherInfoApi) -> WeatherInfoEntity {
+
     override fun invoke(weatherInfo: WeatherInfoApi): WeatherInfoEntity {
         return WeatherInfoEntity(
             temperature = (weatherInfo.temperatureKelvin - 273).roundToInt(),

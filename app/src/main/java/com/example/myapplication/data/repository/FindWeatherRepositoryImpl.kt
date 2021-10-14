@@ -1,9 +1,9 @@
 package com.example.myapplication.data.repository
 
-import com.example.myapplication.data.mapper.WeatherApiToEntityMapper
+import com.example.myapplication.data.mappers.apitoentity.WeatherApiToEntityMapper
 import com.example.myapplication.data.service.AppService
-import com.example.myapplication.domain.FindWeatherRepository
-import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.domain.repostitory.FindWeatherRepository
+import com.example.myapplication.domain.entity.WeatherEntity
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 

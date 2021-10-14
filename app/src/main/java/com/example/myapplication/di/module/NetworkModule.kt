@@ -12,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import javax.inject.Singleton
 
 private const val BASE_URL = "http://api.openweathermap.org/"
 
@@ -49,6 +50,7 @@ class NetworkModule {
 
 
     @Provides
+    @Singleton
     fun providesRetrofit(converterFactory: Converter.Factory, client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(client)

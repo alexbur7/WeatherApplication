@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.findweather.entity
+package com.example.myapplication.domain.entity
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

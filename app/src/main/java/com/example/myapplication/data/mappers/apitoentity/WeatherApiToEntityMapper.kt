@@ -1,7 +1,7 @@
-package com.example.myapplication.data.mapper
+package com.example.myapplication.data.mappers.apitoentity
 
 import com.example.myapplication.data.service.api.WeatherApi
-import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.domain.entity.WeatherEntity
 import javax.inject.Inject
 
 class WeatherApiToEntityMapper @Inject constructor(
@@ -9,7 +9,8 @@ class WeatherApiToEntityMapper @Inject constructor(
     private val weatherTypeApiToEntityMapper: WeatherTypeApiToEntityMapper,
     private val windApiToEntityMapper: WindApiToEntityMapper
 ) : (WeatherApi, String) -> WeatherEntity {
-    override fun invoke(weather: WeatherApi,nameCity: String): WeatherEntity {
+
+    override fun invoke(weather: WeatherApi, nameCity: String): WeatherEntity {
         return WeatherEntity(
             nameCity = nameCity,
             weather = weather.weather.map(weatherTypeApiToEntityMapper),

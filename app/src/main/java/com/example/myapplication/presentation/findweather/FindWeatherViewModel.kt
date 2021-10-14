@@ -3,9 +3,9 @@ package com.example.myapplication.presentation.findweather
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.domain.FindWeatherRepository
+import com.example.myapplication.domain.repostitory.FindWeatherRepository
 import com.example.myapplication.presentation.SingleLiveEvent
-import com.example.myapplication.presentation.findweather.entity.WeatherEntity
+import com.example.myapplication.domain.entity.WeatherEntity
 import com.example.myapplication.presentation.utils.ErrorHandler
 import com.example.myapplication.presentation.utils.extentions.addWeather
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
