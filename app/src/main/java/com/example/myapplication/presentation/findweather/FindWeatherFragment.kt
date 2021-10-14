@@ -65,23 +65,18 @@ class FindWeatherFragment : Fragment(R.layout.fragment_find_weather) {
     }
 
     private fun openStorageWeatherFragment() {
-        viewModel.weathersLiveData.value?.let {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, StorageWeatherFragment.newInstance(it))
-                .addToBackStack(null)
-                .commit()
-        }
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, StorageWeatherFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {
-        fun newInstance(weathers: ArrayList<WeatherEntity>? = null): FindWeatherFragment {
+        fun newInstance(): FindWeatherFragment {
             val args = Bundle()
-            args.putParcelableArrayList(WEATHER_LIST_KEY, weathers)
             val fragment = FindWeatherFragment()
             fragment.arguments = args
             return fragment
         }
-
-        private const val WEATHER_LIST_KEY = "weather_list_key"
     }
 }

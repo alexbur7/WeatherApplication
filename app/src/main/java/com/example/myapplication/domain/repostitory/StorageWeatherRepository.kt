@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Single
 
 interface StorageWeatherRepository {
 
-    fun insertWeatherInDb(weatherEntity: WeatherEntity): Completable
+    fun insertWeatherInDb(weatherEntity: WeatherEntity)
 
     fun deleteWeathersFromDb(): Completable
 

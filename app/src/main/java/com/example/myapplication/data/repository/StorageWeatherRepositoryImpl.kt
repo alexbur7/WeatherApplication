@@ -15,12 +15,8 @@ class StorageWeatherRepositoryImpl @Inject constructor(
     private val weatherDbToEntityMapper: WeatherDbToEntityMapper
 ) : StorageWeatherRepository {
 
-    override fun insertWeatherInDb(weatherEntity: WeatherEntity): Completable {
-        return Single.just(weatherEntity)
-            .map(weatherMapper)
-            .flatMapCompletable {
-                weatherDao.insertWeather(it)
-            }
+    override fun insertWeatherInDb(weatherEntity: WeatherEntity) {
+        return weatherDao.insertWeather(weatherMapper(weatherEntity))
     }
 
     override fun deleteWeathersFromDb(): Completable {

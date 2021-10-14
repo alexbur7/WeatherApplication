@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.core.Maybe
 interface WeatherDao {
 
     @Insert(onConflict = REPLACE)
-    fun insertWeather(weatherDb: WeatherDb): Completable
+    fun insertWeather(weatherDb: WeatherDb)
 
     @Query("DELETE FROM Weather")
     fun deleteWeathers(): Completable
