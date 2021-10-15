@@ -64,7 +64,6 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
     private fun repeatWeather(nameCity: String) {
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, FindWeatherFragment.newInstance(nameCity))
-            .addToBackStack(null)
             .commit()
     }
 
