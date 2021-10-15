@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
@@ -22,7 +23,12 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
     lateinit var factory: ViewModelFactory
 
     private val viewBinding by viewBinding(FragmentStorageWeatherBinding::bind)
-    private val weatherAdapter by lazy(LazyThreadSafetyMode.NONE) { WeatherAdapter(::repeatWeather) }
+    private val weatherAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        WeatherAdapter(
+            ::repeatWeather,
+            ::deleteWeather
+        )
+    }
     private val viewModel by viewModels<StorageWeatherViewModel> { factory }
 
     @ExperimentalSerializationApi
@@ -54,6 +60,9 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
                 adapter = weatherAdapter
                 layoutManager = LinearLayoutManager(context)
             }
+
+            val itemTouchHelper = ItemTouchHelper(SwipeTouchCallback(weatherAdapter))
+            itemTouchHelper.attachToRecyclerView(weathersRecView)
         }
     }
 
@@ -65,6 +74,10 @@ class StorageWeatherFragment : Fragment(R.layout.fragment_storage_weather) {
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, FindWeatherFragment.newInstance(nameCity))
             .commit()
+    }
+
+    private fun deleteWeather(nameCity: String) {
+        viewModel.deleteWeather(nameCity)
     }
 
     companion object {

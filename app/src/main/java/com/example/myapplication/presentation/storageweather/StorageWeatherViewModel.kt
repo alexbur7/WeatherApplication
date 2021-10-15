@@ -38,6 +38,20 @@ class StorageWeatherViewModel @Inject constructor(
             })
     }
 
+    fun deleteWeather(nameCity: String){
+        storageWeatherRepository.deleteWeather(nameCity)
+            .andThen(
+                storageWeatherRepository.getWeathersFromDb()
+            )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _weathersLiveData.value = it
+            }, {
+                _errorTextIdLiveData.value = errorHandler.getErrorStringIdByThrowable(it)
+            })
+    }
+
     private fun getWeathers() {
         storageWeatherRepository.getWeathersFromDb()
             .subscribeOn(Schedulers.io())

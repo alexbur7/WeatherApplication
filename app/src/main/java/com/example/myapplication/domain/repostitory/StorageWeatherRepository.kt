@@ -14,4 +14,6 @@ interface StorageWeatherRepository {
     fun getWeathersFromDb(): Single<List<WeatherEntity>>
 
     fun getLastWeather(): Maybe<WeatherEntity>
+
+    fun deleteWeather(nameCity: String): Completable
 }

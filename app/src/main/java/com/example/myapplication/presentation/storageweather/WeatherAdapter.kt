@@ -12,8 +12,9 @@ import com.example.myapplication.databinding.ItemWeatherBinding
 import com.example.myapplication.domain.entity.WeatherEntity
 
 class WeatherAdapter(
-    private val repeatWeather: (String) -> Unit
-) : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>() {
+    private val repeatWeather: (String) -> Unit,
+    private val deleteWeather: (String) -> Unit
+) : RecyclerView.Adapter<WeatherAdapter.WeatherHolder>(), AdapterCallback {
 
     private val diffUtil = AsyncListDiffer(this, WeatherCallback())
 
@@ -28,6 +29,10 @@ class WeatherAdapter(
     }
 
     override fun getItemCount(): Int = diffUtil.currentList.size
+
+    override fun deleteWeather(position: Int) {
+        deleteWeather(diffUtil.currentList[position].nameCity)
+    }
 
     fun setData(weathers: List<WeatherEntity>) {
         diffUtil.submitList(weathers)

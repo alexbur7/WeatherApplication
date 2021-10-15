@@ -38,4 +38,8 @@ class StorageWeatherRepositoryImpl @Inject constructor(
                 weatherDbToEntityMapper(it.last())
             }
     }
+
+    override fun deleteWeather(nameCity: String): Completable {
+        return weatherDao.deleteWeather(nameCity)
+    }
 }

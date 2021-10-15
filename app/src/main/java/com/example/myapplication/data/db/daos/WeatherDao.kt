@@ -19,4 +19,7 @@ interface WeatherDao {
 
     @Query("SELECT * FROM Weather")
     fun getWeathers(): Maybe<List<WeatherDb>>
+
+    @Query("DELETE FROM Weather WHERE nameCity=:nameCity")
+    fun deleteWeather(nameCity: String): Completable
 }
